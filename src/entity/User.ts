@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity,CreateDateColumn } from "typeorm";
 import {Field, ObjectType} from "type-graphql";
 @ObjectType()
 @Entity()
@@ -36,4 +36,13 @@ export class User extends BaseEntity {
     @Field()
     @Column()
     salaryExpectation: number
+    @Field({nullable:true})
+    @Column({nullable:true})
+    cv: string
+
+    @Field()
+    @CreateDateColumn({nullable:true})
+    createdAt: Date
+
+
 }

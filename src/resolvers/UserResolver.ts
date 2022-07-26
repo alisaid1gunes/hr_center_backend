@@ -1,14 +1,24 @@
 import {Resolver, Query, Arg, Mutation} from "type-graphql";
+import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { User } from "../entity/User";
 import {CreateUserInput} from "../inputs/user/CreateUserInput";
-import {UpdateUserInput} from "../inputs/user/UpdateUserInput";
-
+import {UpdateUserInput} from "../inputs/user/UpdateUserInput"
+import { uploadToCloudinary} from "../utils/uploadHandler";
 
 @Resolver()
 export class UserResolver {
     @Query(() => [User])
-    users(): Promise<User[]> {
-        return User.find();
+    users(@Arg("take") take: number, @Arg("page") page: number): Promise<User[]> {
+        return User.find({
+            take,
+            skip: take * (page - 1)
+
+        });
+    }
+
+    @Query(() => Number)
+     async usersCount():Promise<number> {
+        return await User.count();
     }
 
     @Query(() => User)
@@ -16,9 +26,13 @@ export class UserResolver {
         return User.findOne({ where: { id: id } });
     }
     @Mutation(() => User)
-     async createUser( @Arg("data") data: CreateUserInput) {
-        const user = User.create(data);
-        await user.save();
+     async createUser( @Arg("data") data: CreateUserInput, @Arg('file', () => GraphQLUpload) file: FileUpload) {
+        const { url } = await uploadToCloudinary(file);
+        console.log(url);
+        const user = User.create({...data, cv: url});
+        if(url) {
+            await user.save();
+        }
         return user;
     }
     @Mutation(() => User)

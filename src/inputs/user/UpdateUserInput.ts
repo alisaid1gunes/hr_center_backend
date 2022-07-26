@@ -32,4 +32,7 @@ export class UpdateUserInput extends BaseEntity{
 
     @Field()
     salaryExpectation: number;
+
+    @Field({nullable:true})
+    cv: string;
 }

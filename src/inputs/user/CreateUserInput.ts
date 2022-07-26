@@ -1,4 +1,4 @@
-import { InputType, Field } from "type-graphql";
+import {InputType, Field, Int} from "type-graphql";
 import {BaseEntity} from "typeorm";
 
 @InputType()
@@ -9,7 +9,7 @@ export class CreateUserInput extends BaseEntity{
     @Field()
     lastName: string;
 
-    @Field()
+    @Field(() => Int)
     age: number;
 
     @Field()
@@ -30,6 +30,9 @@ export class CreateUserInput extends BaseEntity{
     @Field()
     jobTitle: string;
 
-    @Field()
+    @Field(() => Int)
     salaryExpectation: number;
+
+    @Field({nullable:true})
+    cv: string;
 }
