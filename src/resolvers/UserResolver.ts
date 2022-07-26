@@ -5,14 +5,24 @@ import {CreateUserInput} from "../inputs/user/CreateUserInput";
 import {UpdateUserInput} from "../inputs/user/UpdateUserInput"
 import { uploadToCloudinary} from "../utils/uploadHandler";
 
+import {ILike} from "typeorm";
+
 @Resolver()
 export class UserResolver {
-    @Query(() => [User])
-    users(@Arg("take") take: number, @Arg("page") page: number): Promise<User[]> {
-        return User.find({
-            take,
-            skip: take * (page - 1)
 
+    @Query(() => [User])
+    users(@Arg("take") take: number, @Arg("page") page: number, @Arg("search") search: string): Promise<User[]> {
+
+        return User.find({
+            where: [
+                {  firstName: ILike(`%${search}%`) },
+                {  lastName: ILike(`%${search}%`) },
+            ],
+            take: take,
+            skip: take * (page-1),
+            order: {
+                createdAt: "DESC"
+            }
         });
     }
 
