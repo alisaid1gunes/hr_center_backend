@@ -19,7 +19,7 @@ export class UserResolver {
                 {  lastName: ILike(`%${search}%`) },
             ],
             take: take,
-            skip: take * (page-1),
+            skip: take * (page),
             order: {
                 createdAt: "DESC"
             }
