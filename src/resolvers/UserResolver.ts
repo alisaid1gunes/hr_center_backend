@@ -6,6 +6,7 @@ import {UpdateUserInput} from "../inputs/user/UpdateUserInput"
 import { uploadToCloudinary} from "../utils/uploadHandler";
 
 import {ILike} from "typeorm";
+import {AppDataSource} from "../data-source";
 
 @Resolver()
 export class UserResolver {
@@ -29,6 +30,39 @@ export class UserResolver {
     @Query(() => Number)
      async usersCount():Promise<number> {
         return await User.count();
+    }
+
+    @Query(() => Number)
+    async usersFemaleCount():Promise<number> {
+        return await User.count(
+            {
+                where: {
+                    gender: "Female"
+                }
+            }
+        );
+    }
+
+
+    @Query(() => Number)
+    async usersMaleCount():Promise<number> {
+        return await User.count(
+            {
+                where: {
+                    gender: "Male"
+                }
+            }
+        );
+    }
+
+    @Query(() => Number)
+    async usersAvgAge():Promise<number> {
+        const { avg } = await AppDataSource
+            .getRepository(User)
+            .createQueryBuilder('user')
+            .select('AVG(user.age)', 'avg')
+            .getRawOne();
+        return avg;
     }
 
     @Query(() => User)

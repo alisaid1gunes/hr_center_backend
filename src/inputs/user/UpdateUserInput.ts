@@ -35,4 +35,7 @@ export class UpdateUserInput extends BaseEntity{
 
     @Field({nullable:true})
     cv: string;
+
+    @Field({nullable:true})
+    gender: string;
 }

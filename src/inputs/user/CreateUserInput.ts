@@ -35,4 +35,7 @@ export class CreateUserInput extends BaseEntity{
 
     @Field({nullable:true})
     cv: string;
+
+    @Field({nullable:true})
+    gender: string;
 }

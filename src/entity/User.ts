@@ -41,6 +41,10 @@ export class User extends BaseEntity {
     cv: string
 
     @Field()
+    @Column({nullable:true})
+    gender: string
+
+    @Field()
     @CreateDateColumn({nullable:true})
     createdAt: Date
 
