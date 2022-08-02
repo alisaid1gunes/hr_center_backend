@@ -70,9 +70,9 @@ export class UserResolver {
         return User.findOne({ where: { id: id } });
     }
     @Mutation(() => User)
-     async createUser( @Arg("data") data: CreateUserInput, @Arg('file', () => GraphQLUpload) file: FileUpload) {
+     async createUser( @Arg("data") data: CreateUserInput, @Arg('file', () => GraphQLUpload ) file: FileUpload) {
         const { url } = await uploadToCloudinary(file);
-        console.log(url);
+
         const user = User.create({...data, cv: url});
         if(url) {
             await user.save();
@@ -80,10 +80,15 @@ export class UserResolver {
         return user;
     }
     @Mutation(() => User)
-    async updateUser(@Arg("id") id: number, @Arg("data") data: UpdateUserInput) {
+    async updateUser(@Arg("id") id: number, @Arg("data") data: UpdateUserInput, @Arg('file', () => GraphQLUpload, { nullable: true }) file: FileUpload) {
+
         const user = await User.findOne({ where: { id: id } });
         if (!user) {
             throw new Error("User not found");
+        }
+        if(file) {
+            const { url } = await uploadToCloudinary(file);
+            user.cv = url;
         }
         Object.assign(user, data);
         await user.save();

@@ -3,34 +3,34 @@ import {BaseEntity} from "typeorm";
 
 @InputType()
 export class UpdateUserInput extends BaseEntity{
-    @Field()
+    @Field({nullable:true})
     firstName: string;
 
-    @Field()
+    @Field({nullable:true})
     lastName: string;
 
-    @Field()
+    @Field({nullable:true})
     age: number;
 
-    @Field()
+    @Field({nullable:true})
     email: string;
 
-    @Field()
+    @Field({nullable:true})
     phone: string;
 
-    @Field()
+    @Field({nullable:true})
     address: string;
 
-    @Field()
+    @Field({nullable:true})
     city: string;
 
-    @Field()
+    @Field({nullable:true})
     country: string;
 
-    @Field()
+    @Field({nullable:true})
     jobTitle: string;
 
-    @Field()
+    @Field({nullable:true})
     salaryExpectation: number;
 
     @Field({nullable:true})
