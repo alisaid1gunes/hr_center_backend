@@ -18,6 +18,7 @@ export class UserResolver {
             where: [
                 {  firstName: ILike(`%${search}%`) },
                 {  lastName: ILike(`%${search}%`) },
+                {  jobTitle: ILike(`%${search}%`) },
             ],
             take: take,
             skip: take * (page),
