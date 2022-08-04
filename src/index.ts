@@ -5,10 +5,11 @@ import { buildSchema } from "type-graphql";
 import {UserResolver} from "./resolvers/UserResolver";
 import {AppDataSource} from "./data-source";
 import {graphqlUploadExpress} from "graphql-upload";
+import {DummyResolver} from "./resolvers/DummyResolver";
 
 const startServer = async () => {
     const schema = await buildSchema({
-        resolvers:[UserResolver],
+        resolvers:[UserResolver,DummyResolver],
     });
     const server = new ApolloServer({schema, });
 
