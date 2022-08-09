@@ -1,15 +1,14 @@
 import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
-import { User } from "../entity/User";
-import { CreateUserInput } from "../inputs/user/CreateUserInput";
-import { UpdateUserInput } from "../inputs/user/UpdateUserInput";
+
 import { uploadToCloudinary } from "../utils/uploadHandler";
 //import * as pdf from "pdf-parse";
 
 import { ILike } from "typeorm";
 import { AppDataSource } from "../data-source";
-import { CvParserService } from "../services/CvParserService";
-import { CvParseResponse } from "./CvParseResponse";
+import { CreateUserInput } from "./dto/create-user.input";
+import { UpdateUserInput } from "./dto/update-user.input";
+import { User } from "./entities/user.entity";
 
 @Resolver()
 export class UserResolver {
@@ -108,12 +107,5 @@ export class UserResolver {
     }
     await user.remove();
     return true;
-  }
-
-  @Mutation(() => CvParseResponse)
-  async parsePdf(@Arg("file", () => GraphQLUpload) file: FileUpload) {
-    const CvParser = new CvParserService(file);
-
-    return await CvParser.parseAll();
   }
 }

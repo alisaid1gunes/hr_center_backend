@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 
 @ObjectType()
-export class CvParseResponse {
+export class CvParserResponse {
   @Field({ nullable: true })
   firstName: string;
   @Field({ nullable: true })
