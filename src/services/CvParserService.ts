@@ -9,7 +9,7 @@ export class CvParserService {
   private firstName: string;
   private lastName: string;
   private address: string;
-  private jobTtile: string;
+  private jobTitle: string;
   public constructor(file: FileUpload) {
     this.file = file;
   }
@@ -63,9 +63,8 @@ export class CvParserService {
   public async parsePhone() {
     const text = await this.parsePdf();
     let phonelst: any = text.match(
-      /(?:(?:\+?([1-9]|[0-9][0-9]|[0-9][0-9][0-9])\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([0-9][1-9]|[0-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/
+      /(?:(?:\+?([1-9]|[0-9][0-9]|[0-9][0-9][0-9])\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([0-9][1-9]|[0-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?/gu
     );
-
     if (phonelst === null) {
       // no Phone Number Found
     } else {
@@ -81,7 +80,7 @@ export class CvParserService {
           finaluniquePhone.push(uniquePhone[i]);
         }
       }
-      phonelst = finaluniquePhone.join("\n").toLowerCase();
+      phonelst = finaluniquePhone.join("").toLowerCase();
 
       this.phone = phonelst;
     }
@@ -105,7 +104,6 @@ export class CvParserService {
     const fullName = name.split(" ");
     const lastName = fullName.pop();
     const firstName = fullName.join(" ");
-    console.log({ firstName, lastName });
     this.firstName = firstName;
     if (lastName) {
       this.lastName = lastName;
@@ -118,7 +116,6 @@ export class CvParserService {
     const address: RegExpMatchArray | null = text.match(
       / *\*?Address\s*\*?\s*(.+)/g
     );
-    console.log(address);
     if (address) {
       this.address = address?.join("\n");
     }
@@ -130,9 +127,8 @@ export class CvParserService {
     const jobTitle: RegExpMatchArray | null = text.match(
       / *\*?Experience\s*\*?\s*(.+)/gi
     );
-    console.log(jobTitle);
     if (jobTitle) {
-      this.jobTtile = jobTitle?.join("\n");
+      this.jobTitle = jobTitle?.join("\n");
     }
     return jobTitle?.join("\n");
   }
@@ -148,7 +144,7 @@ export class CvParserService {
       address: this.address,
       phone: this.phone,
       email: this.email,
-      jobTitle: this.jobTtile,
+      jobTitle: this.jobTitle,
     };
   }
 }

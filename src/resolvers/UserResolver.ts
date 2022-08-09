@@ -113,8 +113,7 @@ export class UserResolver {
   @Mutation(() => CvParseResponse)
   async parsePdf(@Arg("file", () => GraphQLUpload) file: FileUpload) {
     const CvParser = new CvParserService(file);
-    const { firstName, lastName, email, phone, address, jobTitle } =
-      await CvParser.parseAll();
-    return { firstName, lastName, email, phone, address, jobTitle };
+
+    return await CvParser.parseAll();
   }
 }
