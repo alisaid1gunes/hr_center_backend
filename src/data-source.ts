@@ -1,16 +1,23 @@
 import "reflect-metadata";
-import { DataSource } from "typeorm";
+import { createConnection } from "typeorm";
 import { User } from "./users/entities/user.entity";
 
-export const AppDataSource = new DataSource({
-  type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "asg123asg",
-  database: "apollo-server-boilerplate",
-  logging: false,
-  entities: [User],
-  migrations: ["src/migrations/*.ts"],
-  subscribers: [],
-});
+export const connectDB = async () => {
+  try {
+    await createConnection({
+      type: "postgres",
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      logging: false,
+      entities: [User],
+      migrations: ["src/migrations/*.ts"],
+      subscribers: [],
+    });
+    console.log("Database successfully initialized");
+  } catch (error) {
+    console.log(`Database failed to connect ${error.message}`);
+  }
+};

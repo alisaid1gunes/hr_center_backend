@@ -22,7 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": false,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules"

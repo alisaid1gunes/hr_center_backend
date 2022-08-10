@@ -1,85 +1,59 @@
 import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
 
-import { uploadToCloudinary } from "../utils/uploadHandler";
-//import * as pdf from "pdf-parse";
-
-import { ILike } from "typeorm";
-import { AppDataSource } from "../data-source";
 import { CreateUserInput } from "./dto/create-user.input";
 import { UpdateUserInput } from "./dto/update-user.input";
 import { User } from "./entities/user.entity";
+import { UserService } from "./user.service";
 
+import { Service } from "typedi";
+@Service()
 @Resolver()
 export class UserResolver {
+  constructor(
+    // constructor injection of service
+    private readonly userService: UserService
+  ) {}
   @Query(() => [User])
-  users(
+  async users(
     @Arg("take") take: number,
     @Arg("page") page: number,
     @Arg("search") search: string
   ): Promise<User[]> {
-    return User.find({
-      where: [
-        { firstName: ILike(`%${search}%`) },
-        { lastName: ILike(`%${search}%`) },
-        { jobTitle: ILike(`%${search}%`) },
-      ],
-      take: take,
-      skip: take * page,
-      order: {
-        createdAt: "DESC",
-      },
-    });
+    return await this.userService.getUsers(take, page, search);
   }
 
   @Query(() => Number)
   async usersCount(): Promise<number> {
-    return await User.count();
+    return await this.userService.getUsersCount();
   }
 
   @Query(() => Number)
   async usersFemaleCount(): Promise<number> {
-    return await User.count({
-      where: {
-        gender: "Female",
-      },
-    });
+    return await this.userService.getUsersFemaleCount();
   }
 
   @Query(() => Number)
   async usersMaleCount(): Promise<number> {
-    return await User.count({
-      where: {
-        gender: "Male",
-      },
-    });
+    return await this.userService.getUsersMaleCount();
   }
 
   @Query(() => Number)
   async usersAvgAge(): Promise<number> {
-    const { avg } = await AppDataSource.getRepository(User)
-      .createQueryBuilder("user")
-      .select("AVG(user.age)", "avg")
-      .getRawOne();
-    return avg;
+    return await this.userService.getUsersAvgAge();
   }
 
   @Query(() => User)
-  user(@Arg("id") id: number) {
-    return User.findOne({ where: { id: id } });
+  async user(@Arg("id") id: number) {
+    return await this.userService.getUser(id);
   }
+
   @Mutation(() => User)
   async createUser(
     @Arg("data") data: CreateUserInput,
     @Arg("file", () => GraphQLUpload) file: FileUpload
   ) {
-    const { url } = await uploadToCloudinary(file);
-
-    const user = User.create({ ...data, cv: url });
-    if (url) {
-      await user.save();
-    }
-    return user;
+    return await this.userService.createUser(data, file);
   }
   @Mutation(() => User)
   async updateUser(
@@ -87,25 +61,11 @@ export class UserResolver {
     @Arg("data") data: UpdateUserInput,
     @Arg("file", () => GraphQLUpload, { nullable: true }) file: FileUpload
   ) {
-    const user = await User.findOne({ where: { id: id } });
-    if (!user) {
-      throw new Error("User not found");
-    }
-    if (file) {
-      const { url } = await uploadToCloudinary(file);
-      user.cv = url;
-    }
-    Object.assign(user, data);
-    await user.save();
-    return user;
+    return await this.userService.updateUser(id, data, file);
   }
   @Mutation(() => Boolean)
   async deleteUser(@Arg("id") id: number) {
-    const user = await User.findOne({ where: { id: id } });
-    if (!user) {
-      throw new Error("User not found");
-    }
-    await user.remove();
+    await this.userService.deleteUser(id);
     return true;
   }
 }

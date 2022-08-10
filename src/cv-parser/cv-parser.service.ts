@@ -1,6 +1,8 @@
 import { FileUpload } from "graphql-upload";
 import * as pdf from "pdf-parse";
+import { Service } from "typedi";
 
+@Service()
 export class CvParserService {
   private file: FileUpload;
   private text: string;
@@ -10,9 +12,6 @@ export class CvParserService {
   private lastName: string;
   private address: string;
   private jobTitle: string;
-  public constructor(file: FileUpload) {
-    this.file = file;
-  }
 
   public streamToString = (stream: any) => {
     const chunks: any = [];
@@ -132,7 +131,8 @@ export class CvParserService {
     }
     return jobTitle?.join("\n");
   }
-  public async parseAll() {
+  public async parseAll(file: FileUpload) {
+    this.file = file;
     await this.parseName();
     await this.parseAddress();
     await this.parsePhone();
