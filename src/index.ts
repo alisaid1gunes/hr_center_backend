@@ -24,7 +24,11 @@ const startServer = async () => {
     container: Container,
   });
 
-  const server = new ApolloServer({ schema, cache: new InMemoryLRUCache() });
+  const server = new ApolloServer({
+    schema,
+    cache: new InMemoryLRUCache(),
+    introspection: true,
+  });
 
   const app = express();
   await server.start();
