@@ -12,6 +12,9 @@ import { useContainer } from "typeorm";
 import * as dotenv from "dotenv";
 import * as cors from "cors";
 dotenv.config();
+
+const PORT = process.env.PORT || 4000;
+
 const startServer = async () => {
   useContainer(Container);
   await connectDB();
@@ -32,9 +35,9 @@ const startServer = async () => {
     },
   });
   app.use(cors());
-  app.listen({ port: 4000 }, () =>
+  app.listen({ port: PORT }, () =>
     console.log(
-      `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
+      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
     )
   );
 };
