@@ -26,7 +26,6 @@
       "pdf-parse": "^1.1.1",
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.13",
-      "tsyringe": "^4.7.0",
       "type-graphql": "^1.1.1",
       "typedi": "^0.10.0",
       "typeorm": "0.2.31",
