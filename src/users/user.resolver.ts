@@ -10,10 +10,7 @@ import { Service } from "typedi";
 @Service()
 @Resolver()
 export class UserResolver {
-  constructor(
-    // constructor injection of service
-    private readonly userService: UserService
-  ) {}
+  constructor(private readonly userService: UserService) {}
   @Query(() => [User])
   async users(
     @Arg("take") take: number,

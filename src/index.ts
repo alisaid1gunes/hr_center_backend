@@ -10,6 +10,7 @@ import { CvParserResolver } from "./cv-parser/cv-parser.resolver";
 import { Container } from "typeorm-typedi-extensions";
 import { useContainer } from "typeorm";
 import * as dotenv from "dotenv";
+import * as cors from "cors";
 dotenv.config();
 const startServer = async () => {
   useContainer(Container);
@@ -30,7 +31,7 @@ const startServer = async () => {
       limit: "700kb",
     },
   });
-
+  app.use(cors());
   app.listen({ port: 4000 }, () =>
     console.log(
       `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
