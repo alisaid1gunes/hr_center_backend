@@ -7,6 +7,14 @@ export const connectDB = async () => {
   if (process.env.NODE_ENV === "production") {
     source = {
       url: process.env.DATABASE_URL,
+      logging: false,
+      ssl: true,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
     };
   } else if (process.env.NODE_ENV === "development") {
     source = {
