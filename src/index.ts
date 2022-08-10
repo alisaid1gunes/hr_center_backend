@@ -11,6 +11,7 @@ import { Container } from "typeorm-typedi-extensions";
 import { useContainer } from "typeorm";
 import * as dotenv from "dotenv";
 import * as cors from "cors";
+import { InMemoryLRUCache } from "@apollo/utils.keyvaluecache";
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -23,7 +24,7 @@ const startServer = async () => {
     container: Container,
   });
 
-  const server = new ApolloServer({ schema });
+  const server = new ApolloServer({ schema, cache: new InMemoryLRUCache() });
 
   const app = express();
   await server.start();
