@@ -32,6 +32,7 @@ export const connectDB = async () => {
       ...source,
       logging: false,
       entities: [User],
+      synchronize: true,
       migrations: ["src/migrations/*.ts"],
       subscribers: [],
     });
