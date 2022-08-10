@@ -30,7 +30,8 @@
       "type-graphql": "^1.1.1",
       "typedi": "^0.10.0",
       "typeorm": "0.2.31",
-      "typeorm-typedi-extensions": "^0.4.1"
+      "typeorm-typedi-extensions": "^0.4.1",
+      "ts-node": "10.7.0"
    },
    "scripts": {
       "start": "nodemon src/index.ts",
