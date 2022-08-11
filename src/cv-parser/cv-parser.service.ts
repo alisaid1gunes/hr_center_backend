@@ -180,6 +180,7 @@ export class CvParserService {
       email: this.email,
       jobTitle: this.jobTitle,
       linkedIn: this.linkedIn,
+      github: this.github,
     };
   }
 }
