@@ -15,6 +15,8 @@ export class CvParserService {
   private jobTitle: string;
   private linkedIn: string;
   private github: string;
+  private stackoverflow: string;
+
   public streamToString = (stream: any) => {
     const chunks: any = [];
     return new Promise((resolve, reject) => {
@@ -163,6 +165,21 @@ export class CvParserService {
 
     return this.github;
   }
+
+  public async parseStackOverFlow() {
+    const text = await this.parsePdf();
+    const links = text.match(urlRegex({ strict: false }));
+
+    if (links) {
+      links.forEach((link) => {
+        if (link.includes("stackoverflow")) {
+          this.stackoverflow = link;
+        }
+      });
+    }
+
+    return this.stackoverflow;
+  }
   public async parseAll(file: FileUpload) {
     this.file = file;
     await this.parseName();
@@ -172,6 +189,7 @@ export class CvParserService {
     await this.parseJobTitle();
     await this.parseLinkedIn();
     await this.parseGithub();
+    await this.parseStackOverFlow();
     return {
       firstName: this.firstName,
       lastName: this.lastName,

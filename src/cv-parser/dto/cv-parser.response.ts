@@ -18,4 +18,6 @@ export class CvParserResponse {
   github: string;
   @Field({ nullable: true })
   linkedin: string;
+  @Field({ nullable: true })
+  stackoverflow: string;
 }
