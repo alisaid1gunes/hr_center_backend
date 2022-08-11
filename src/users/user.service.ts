@@ -6,6 +6,7 @@ import { CreateUserInput } from "./dto/create-user.input";
 import { uploadToCloudinary } from "../utils/uploadHandler";
 import { UpdateUserInput } from "./dto/update-user.input";
 import { Service } from "typedi";
+import { ChangeStatusInput } from "./dto/change-status.input";
 
 @Service()
 export class UserService {
@@ -103,5 +104,19 @@ export class UserService {
     }
     await this.userRepository.remove(user);
     return true;
+  }
+
+  public async changeApplicationStatus(
+    changeStatusInput: ChangeStatusInput
+  ): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { id: changeStatusInput.id },
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    user.applicationStatus = changeStatusInput.status;
+    await this.userRepository.save(user);
+    return user;
   }
 }

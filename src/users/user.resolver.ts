@@ -7,6 +7,7 @@ import { User } from "./entities/user.entity";
 import { UserService } from "./user.service";
 
 import { Service } from "typedi";
+import { ChangeStatusInput } from "./dto/change-status.input";
 @Service()
 @Resolver()
 export class UserResolver {
@@ -63,6 +64,12 @@ export class UserResolver {
   @Mutation(() => Boolean)
   async deleteUser(@Arg("id") id: number) {
     await this.userService.deleteUser(id);
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async changeStatus(@Arg("data") data: ChangeStatusInput) {
+    await this.userService.changeApplicationStatus(data);
     return true;
   }
 }

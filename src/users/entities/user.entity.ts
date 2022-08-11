@@ -5,6 +5,9 @@ import {
   CreateDateColumn,
 } from "typeorm";
 import { Field, ObjectType } from "type-graphql";
+
+import { StatusEnum } from "../dto/status.enum";
+
 @ObjectType()
 @Entity()
 export class User {
@@ -48,6 +51,10 @@ export class User {
   @Field()
   @Column({ nullable: true })
   gender: string;
+
+  @Field()
+  @Column({ nullable: true, default: StatusEnum.Application })
+  applicationStatus: string;
 
   @Field()
   @CreateDateColumn({ nullable: true })
