@@ -15,7 +15,7 @@ export class DummyService {
   public async createDummyUsers(): Promise<User[]> {
     const users = [];
     const applicationStatus = ["Application", "Call", "Interview", "Offer"];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3000; i++) {
       const user = this.userRepository.create({
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
