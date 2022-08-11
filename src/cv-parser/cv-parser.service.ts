@@ -1,6 +1,7 @@
 import { FileUpload } from "graphql-upload";
 import * as pdf from "pdf-parse";
 import { Service } from "typedi";
+import * as urlRegex from "url-regex";
 
 @Service()
 export class CvParserService {
@@ -12,7 +13,8 @@ export class CvParserService {
   private lastName: string;
   private address: string;
   private jobTitle: string;
-
+  private linkedIn: string;
+  private github: string;
   public streamToString = (stream: any) => {
     const chunks: any = [];
     return new Promise((resolve, reject) => {
@@ -131,6 +133,36 @@ export class CvParserService {
     }
     return jobTitle?.join("\n");
   }
+
+  public async parseLinkedIn() {
+    const text = await this.parsePdf();
+    const links = text.match(urlRegex({ strict: false }));
+
+    if (links) {
+      links.forEach((link) => {
+        if (link.includes("linkedin")) {
+          this.linkedIn = link;
+        }
+      });
+    }
+
+    return this.linkedIn;
+  }
+
+  public async parseGithub() {
+    const text = await this.parsePdf();
+    const links = text.match(urlRegex({ strict: false }));
+
+    if (links) {
+      links.forEach((link) => {
+        if (link.includes("github")) {
+          this.github = link;
+        }
+      });
+    }
+
+    return this.github;
+  }
   public async parseAll(file: FileUpload) {
     this.file = file;
     await this.parseName();
@@ -138,6 +170,10 @@ export class CvParserService {
     await this.parsePhone();
     await this.parseEmail();
     await this.parseJobTitle();
+    await this.parseLinkedIn();
+    await this.parseGithub();
+    console.log(this.linkedIn);
+    console.log(this.github);
     return {
       firstName: this.firstName,
       lastName: this.lastName,
@@ -145,6 +181,7 @@ export class CvParserService {
       phone: this.phone,
       email: this.email,
       jobTitle: this.jobTitle,
+      linkedIn: this.linkedIn,
     };
   }
 }
