@@ -172,8 +172,6 @@ export class CvParserService {
     await this.parseJobTitle();
     await this.parseLinkedIn();
     await this.parseGithub();
-    console.log(this.linkedIn);
-    console.log(this.github);
     return {
       firstName: this.firstName,
       lastName: this.lastName,

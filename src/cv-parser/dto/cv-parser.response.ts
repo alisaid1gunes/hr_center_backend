@@ -14,4 +14,8 @@ export class CvParserResponse {
   address: string;
   @Field({ nullable: true })
   jobTitle: string;
+  @Field({ nullable: true })
+  github: string;
+  @Field({ nullable: true })
+  linkedin: string;
 }
