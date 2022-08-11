@@ -14,7 +14,8 @@ export class DummyService {
 
   public async createDummyUsers(): Promise<User[]> {
     const users = [];
-    for (let i = 0; i < 3000; i++) {
+    const applicationStatus = ["Application", "Call", "Interview", "Offer"];
+    for (let i = 0; i < 5; i++) {
       const user = this.userRepository.create({
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
@@ -29,7 +30,12 @@ export class DummyService {
           Math.floor(Math.random() * (100000 - 10000 + 1)) + 10000,
         cv: "cv/4a1c463fdd286a9d16ced63f3c9d75/4a1c463fdd286a9d16ced63f3c9d75",
         gender: faker.name.gender(true),
+        applicationStatus:
+          applicationStatus[
+            Math.floor(Math.random() * applicationStatus.length)
+          ],
       });
+
       await this.userRepository.save(user);
       users.push(user);
     }
