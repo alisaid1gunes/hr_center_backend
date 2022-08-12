@@ -12,6 +12,7 @@ import { useContainer } from "typeorm";
 import * as dotenv from "dotenv";
 import * as cors from "cors";
 import { InMemoryLRUCache } from "@apollo/utils.keyvaluecache";
+import { CategoryResolver } from "./categories/category.resolver";
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -20,7 +21,12 @@ const startServer = async () => {
   useContainer(Container);
   await connectDB();
   const schema = await buildSchema({
-    resolvers: [UserResolver, DummyResolver, CvParserResolver],
+    resolvers: [
+      UserResolver,
+      DummyResolver,
+      CvParserResolver,
+      CategoryResolver,
+    ],
     container: Container,
   });
 
