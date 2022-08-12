@@ -2,6 +2,8 @@ import { Service } from "typedi";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { Repository } from "typeorm";
 import { Category } from "./entities/category.entity";
+import { CreateCategoryInput } from "./dto/create-category.input";
+import { UpdateCategoryInput } from "./dto/update-category.input";
 
 @Service()
 export class CategoryService {
@@ -21,18 +23,20 @@ export class CategoryService {
     }
     return category;
   }
-  public async createCategory(category: Category): Promise<Category> {
-    return await this.categoryRepository.save(category);
+  public async createCategory(
+    createCategoryInput: CreateCategoryInput
+  ): Promise<Category> {
+    return await this.categoryRepository.save(createCategoryInput);
   }
   public async updateCategory(
     id: number,
-    category: Category
+    updateCategoryInput: UpdateCategoryInput
   ): Promise<Category> {
     const categoryToUpdate = await this.categoryRepository.findOne(id);
     if (!categoryToUpdate) {
       throw new Error("Category not found");
     }
-    Object.assign(categoryToUpdate, category);
+    Object.assign(categoryToUpdate, updateCategoryInput);
     return await this.categoryRepository.save(categoryToUpdate);
   }
   public async deleteCategory(id: number): Promise<boolean> {
