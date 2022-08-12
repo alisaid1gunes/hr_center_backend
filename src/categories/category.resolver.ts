@@ -2,6 +2,8 @@ import { CategoryService } from "./category.service";
 import { Service } from "typedi";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Category } from "./entities/category.entity";
+import { CreateCategoryInput } from "./dto/create-category.input";
+import { UpdateCategoryInput } from "./dto/update-category.input";
 @Service()
 @Resolver()
 export class CategoryResolver {
@@ -18,15 +20,17 @@ export class CategoryResolver {
   }
 
   @Mutation(() => Category)
-  async createCategory(@Arg("data") data: Category): Promise<Category> {
-    return await this.categoryService.createCategory(data);
+  async createCategory(
+    @Arg("data") createCategoryInput: CreateCategoryInput
+  ): Promise<Category> {
+    return await this.categoryService.createCategory(createCategoryInput);
   }
   @Mutation(() => Category)
   async updateCategory(
     @Arg("id") id: number,
-    @Arg("data") data: Category
+    @Arg("data") updateCategoryInput: UpdateCategoryInput
   ): Promise<Category> {
-    return await this.categoryService.updateCategory(id, data);
+    return await this.categoryService.updateCategory(id, updateCategoryInput);
   }
 
   @Mutation(() => Boolean)
