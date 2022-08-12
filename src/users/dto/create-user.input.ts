@@ -36,9 +36,6 @@ export class CreateUserInput extends BaseEntity {
   @Field({ nullable: true })
   cv: string;
 
-  @Field()
-  applicationStatus: string;
-
   @Field({ nullable: true })
   gender: string;
 }
