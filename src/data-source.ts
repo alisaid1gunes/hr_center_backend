@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { User } from "./users/entities/user.entity";
+import { Category } from "./categories/entities/category.entity";
 
 export const connectDB = async () => {
   let source = {};
@@ -31,7 +32,7 @@ export const connectDB = async () => {
       type: "postgres",
       ...source,
       logging: false,
-      entities: [User],
+      entities: [User, Category],
       synchronize: true,
       migrations: ["src/migrations/*.ts"],
       subscribers: [],
