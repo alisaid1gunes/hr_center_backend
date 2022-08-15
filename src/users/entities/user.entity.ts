@@ -6,8 +6,6 @@ import {
 } from "typeorm";
 import { Field, ObjectType } from "type-graphql";
 
-import { StatusEnum } from "../dto/status.enum";
-
 @ObjectType()
 @Entity()
 export class User {
@@ -53,7 +51,7 @@ export class User {
   gender: string;
 
   @Field()
-  @Column({ nullable: true, default: StatusEnum.Application })
+  @Column({ nullable: true, default: "Application" })
   applicationStatus: string;
 
   @Field()
