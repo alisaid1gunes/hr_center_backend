@@ -20,7 +20,7 @@ This is a web project that helps hr experts manage the job applications.
 Install Focus with yarn
 
 ```bash
-  npm install
+  yarn install
 ```
     
 ## Running Tests
@@ -28,7 +28,7 @@ Install Focus with yarn
 To run tests, run the following command
 
 ```bash
-  npm run test
+  yarn test
 ```
 
 
